@@ -117,7 +117,7 @@ function NFTBalance() {
   }
 
   return (
-    <DropItem desc='Get user NFT collection data' method='GET' title='nft-balance'>
+    <DropItem desc='Get user NFT collection data' method='POST' title='nft-balance'>
       {isConnected ? (
         <div className='flex flex-col gap-4'>
           <div>

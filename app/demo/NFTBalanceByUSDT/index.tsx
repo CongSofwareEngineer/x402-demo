@@ -35,7 +35,7 @@ function NFTBalanceByUSDT() {
         setDataListNFT([])
         setError('')
         const resRequire = await fetcher({
-          url: '/api/x402/usdt/nft-balance',
+          url: '/api/x402/nft-balance-premium',
           method: 'POST',
           // body: {
           //   address,
@@ -89,7 +89,7 @@ function NFTBalanceByUSDT() {
         console.log({ payment: payment })
 
         const res = await fetcher({
-          url: '/api/x402/usdt/nft-balance',
+          url: '/api/x402/nft-balance-premium',
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,
@@ -100,7 +100,7 @@ function NFTBalanceByUSDT() {
         })
 
         if (res?.data?.listNFT) {
-          setDataListNFT(res.data.listNFT)
+          setDataListNFT(res.data.listNFT) // limit 20 items
         }
         if (res?.data?.error) {
           setError(res?.data?.error)
@@ -117,7 +117,7 @@ function NFTBalanceByUSDT() {
   }
 
   return (
-    <DropItem desc='Get user NFT collection data with fee USDT' method='GET' title='usdt/nft-balance'>
+    <DropItem desc='Get user NFT collection data with user premium fee' method='POST' title='nft-balance-premium'>
       {isConnected ? (
         <div className='flex flex-col gap-4'>
           <div>
@@ -130,7 +130,7 @@ function NFTBalanceByUSDT() {
               onClick={handleGetData}
             >
               {isPending && <MyLoading />}
-              Fetch USDT (${COINBASE_CONFIG.PAY_AMOUNT})
+              Fetch USDT (${COINBASE_CONFIG.PAY_AMOUNT_PREMIUM})
             </div>
           </div>
 
