@@ -28,7 +28,6 @@ export default function DemoPage() {
               <p className='text-gray-500'>No Description</p>
             </div>
             <div className='text-right'>
-              <div className='text-red-500 font-medium mb-2'>Address nhận tiền phí</div>
               <div className='flex items-center space-x-2 bg-gray-100 rounded-lg px-3 py-2'>
                 <div className='w-4 h-4 bg-blue-500 rounded' />
                 <span className='font-mono cursor-pointer text-sm !text-black' onClick={() => copyToClipboard(COINBASE_CONFIG.PAY_TO)}>
