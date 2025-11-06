@@ -2,12 +2,6 @@
 import { useAppKit } from '@reown/appkit/react'
 import React from 'react'
 import { useAccount, useSignTypedData } from 'wagmi'
-import { exact } from 'x402/schemes'
-import { PaymentPayload } from 'x402/types'
-import { preparePaymentHeader } from 'x402/client'
-import { getNetworkId } from 'x402/shared'
-
-import { verifyPayment } from './actions'
 
 import fetcher from '@/configs/fetcher'
 
@@ -19,67 +13,83 @@ export default function HomePage() {
   const handleClick = async () => {
     try {
       console.log('start handleClick')
-      const res = await fetcher({
-        url: '/api/x402/demo',
+      // const res = await fetcher({
+      //   url: '/api/x402/demo-2',
+      //   method: 'POST',
+      //   // headers: {
+      //   //   'X-PAYMENT': payment,
+      //   // },
+      // })
+
+      // console.log({ res })
+
+      // const paymentRequirements = res?.data?.accepts[0]
+
+      // const unSignedPaymentHeader = preparePaymentHeader(address!, 1, paymentRequirements)
+
+      // console.log({ unSignedPaymentHeader })
+      // const eip712Data = {
+      //   types: {
+      //     TransferWithAuthorization: [
+      //       { name: 'from', type: 'address' },
+      //       { name: 'to', type: 'address' },
+      //       { name: 'value', type: 'uint256' },
+      //       { name: 'validAfter', type: 'uint256' },
+      //       { name: 'validBefore', type: 'uint256' },
+      //       { name: 'nonce', type: 'bytes32' },
+      //     ],
+      //   },
+      //   domain: {
+      //     name: paymentRequirements.extra?.name,
+      //     version: paymentRequirements.extra?.version,
+      //     chainId: getNetworkId(paymentRequirements.network),
+      //     verifyingContract: paymentRequirements.asset as `0x${string}`,
+      //   },
+      //   primaryType: 'TransferWithAuthorization' as const,
+      //   message: unSignedPaymentHeader.payload.authorization,
+      // }
+
+      // console.log({ eip712Data })
+      // const signature = await signTypedDataAsync(eip712Data)
+
+      // console.log({ signature })
+
+      // const paymentPayload: PaymentPayload = {
+      //   ...unSignedPaymentHeader,
+      //   payload: {
+      //     ...unSignedPaymentHeader.payload,
+      //     signature,
+      //   },
+      // }
+      const dataFake = {
+        payment:
+          'eyJ4NDAyVmVyc2lvbiI6MSwic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiYmFzZSIsInBheWxvYWQiOnsic2lnbmF0dXJlIjoiMHhiNDlmMWRkNTFiZWVjYTVhZmZhMTVkMWQ3NTZlM2NmNjU2OWJjMzEwMTA0NThhZmM4YmY4NGRmMWRmYmRmMTcxNGJmZTgzZDg5NGVlMGFkYjU0MzI4N2FiMzc2MjExZGE5YWEyZGIyNWIwMjM2NDQwNjM3OGNlNzM4MjZmYWY4MTFjIiwiYXV0aG9yaXphdGlvbiI6eyJmcm9tIjoiMHg5ZjI3NmFmNzlCMkI1REUyOTQ2QTg4QjBGZTI3MTczMThGOTI0ZDdjIiwidG8iOiIweDlmMjc2YWY3OWIyYjVkZTI5NDZhODhiMGZlMjcxNzMxOGY5MjRkN2MiLCJ2YWx1ZSI6IjEwMDAwIiwidmFsaWRBZnRlciI6IjE3NjIzOTg3MDUiLCJ2YWxpZEJlZm9yZSI6IjE3NjI0NTkzMDUiLCJub25jZSI6IjB4NjVkZDQ2OTgxNjcxM2Q3ZGFiYzUzMTMwOGFkYWRhZTg4MTMzZDk2NDk0YjRhNWVlMTRjODVlNGU0NjRiMTNhYiJ9fX0=',
+      }
+      // const payment: string = exact.evm.encodePayment(paymentPayload)
+
+      console.log({ payment: dataFake.payment })
+
+      const res2 = await fetcher({
+        url: '/api/x402/demo-2',
         method: 'POST',
-        // headers: {
-        //   'X-PAYMENT': payment,
-        // },
+        headers: {
+          'X-PAYMENT': dataFake.payment,
+        },
       })
 
-      console.log({ res })
+      console.log({ res2 })
 
-      const paymentRequirements = res?.data?.accepts[0]
+      // // await setCookie('payment-session', payment)
+      // // const payment =
+      // //   'eyJ4NDAyVmVyc2lvbiI6MSwic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiYmFzZSIsInBheWxvYWQiOnsic2lnbmF0dXJlIjoiMHg1NTU3MzBlNDY4MWI2YjMwZTAwZjNiN2ViMDhkZDM5MWMxNGYzY2JkOTQwMTc3M2ZiN2M3ODgwNzYzMDRiMjE1NWZjM2U4YjE4MDY4MGM2YWFjOGNmYTY2MzcwOGM5YzM2NTI2ZmYwYzZjMTRlNjQ1Nzk0ODFjNTk3NTZlNGMwYTFiIiwiYXV0aG9yaXphdGlvbiI6eyJmcm9tIjoiMHg5ZjI3NmFmNzlCMkI1REUyOTQ2QTg4QjBGZTI3MTczMThGOTI0ZDdjIiwidG8iOiIweDlmMjc2YWY3OUIyQjVERTI5NDZBODhCMEZlMjcxNzMxOEY5MjRkN2MiLCJ2YWx1ZSI6IjEwMCIsInZhbGlkQWZ0ZXIiOiIxNzYyMzMxMDI1IiwidmFsaWRCZWZvcmUiOiIxNzYyMzkxNjI1Iiwibm9uY2UiOiIweGU1MjUwOGY4NmIyODM2MjliNDY5NWY0OGQ0MTFmODU5OGE4NjJiYWVlMThjM2Q5ZjU1Y2QwZTUyMmIwNmUwMjYifX19'
 
-      const unSignedPaymentHeader = preparePaymentHeader(address!, 1, paymentRequirements)
+      // console.log({ payment })
 
-      console.log({ unSignedPaymentHeader })
-      const eip712Data = {
-        types: {
-          TransferWithAuthorization: [
-            { name: 'from', type: 'address' },
-            { name: 'to', type: 'address' },
-            { name: 'value', type: 'uint256' },
-            { name: 'validAfter', type: 'uint256' },
-            { name: 'validBefore', type: 'uint256' },
-            { name: 'nonce', type: 'bytes32' },
-          ],
-        },
-        domain: {
-          name: paymentRequirements.extra?.name,
-          version: paymentRequirements.extra?.version,
-          chainId: getNetworkId(paymentRequirements.network),
-          verifyingContract: paymentRequirements.asset as `0x${string}`,
-        },
-        primaryType: 'TransferWithAuthorization' as const,
-        message: unSignedPaymentHeader.payload.authorization,
-      }
+      // const paymentDecode = exact.evm.decodePayment(payment)
+      // const verifyPaymentWithPayment = verifyPayment.bind(null, payment)
+      // const result = await verifyPaymentWithPayment()
 
-      console.log({ eip712Data })
-      const signature = await signTypedDataAsync(eip712Data)
-
-      console.log({ signature })
-
-      const paymentPayload: PaymentPayload = {
-        ...unSignedPaymentHeader,
-        payload: {
-          ...unSignedPaymentHeader.payload,
-          signature,
-        },
-      }
-      const payment: string = exact.evm.encodePayment(paymentPayload)
-
-      // await setCookie('payment-session', payment)
-      // const payment =
-      //   'eyJ4NDAyVmVyc2lvbiI6MSwic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiYmFzZSIsInBheWxvYWQiOnsic2lnbmF0dXJlIjoiMHg1NTU3MzBlNDY4MWI2YjMwZTAwZjNiN2ViMDhkZDM5MWMxNGYzY2JkOTQwMTc3M2ZiN2M3ODgwNzYzMDRiMjE1NWZjM2U4YjE4MDY4MGM2YWFjOGNmYTY2MzcwOGM5YzM2NTI2ZmYwYzZjMTRlNjQ1Nzk0ODFjNTk3NTZlNGMwYTFiIiwiYXV0aG9yaXphdGlvbiI6eyJmcm9tIjoiMHg5ZjI3NmFmNzlCMkI1REUyOTQ2QTg4QjBGZTI3MTczMThGOTI0ZDdjIiwidG8iOiIweDlmMjc2YWY3OUIyQjVERTI5NDZBODhCMEZlMjcxNzMxOEY5MjRkN2MiLCJ2YWx1ZSI6IjEwMCIsInZhbGlkQWZ0ZXIiOiIxNzYyMzMxMDI1IiwidmFsaWRCZWZvcmUiOiIxNzYyMzkxNjI1Iiwibm9uY2UiOiIweGU1MjUwOGY4NmIyODM2MjliNDY5NWY0OGQ0MTFmODU5OGE4NjJiYWVlMThjM2Q5ZjU1Y2QwZTUyMmIwNmUwMjYifX19'
-
-      console.log({ payment })
-
-      const paymentDecode = exact.evm.decodePayment(payment)
-      const verifyPaymentWithPayment = verifyPayment.bind(null, payment)
-      const result = await verifyPaymentWithPayment()
-
-      console.log({ result })
+      // console.log({ result })
 
       // const res2 = await fetcher({
       //   // url: '/api/x402/verify?address=' + address,
