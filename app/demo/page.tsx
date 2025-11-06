@@ -11,9 +11,7 @@ import useInfoPayment from '@/hooks/tank-query/useInfoPayment'
 import MyLoading from '@/components/MyLoading'
 
 export default function DemoPage() {
-  const { data, isLoading, isFetching, refetch } = useInfoPayment()
-
-  console.log({ data })
+  const { data, isLoading } = useInfoPayment()
 
   return (
     <div className='min-h-screen bg-gray-50 py-8'>
