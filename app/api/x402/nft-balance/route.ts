@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     let decodedPayment: PaymentPayload
     const url = new URL(req.url)
     const paymentHeader = req.headers.get('X-PAYMENT')
-    let body = {}
+    let body = {} as { address: string }
 
     try {
       body = ((await req.json()) || {}) as { address: string }
