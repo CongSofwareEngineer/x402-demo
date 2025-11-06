@@ -45,3 +45,14 @@ export const detectUrl = (url?: string, defaultUrl = '') => {
     return defaultUrl
   }
 }
+
+export const copyToClipboard = (text: any) => {
+  const tmp = document.createElement('input')
+
+  tmp.value = text
+  document.body.appendChild(tmp)
+  tmp.select()
+  document.execCommand('copy')
+  tmp.remove()
+  alert('Copied to clipboard!')
+}

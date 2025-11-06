@@ -8,16 +8,20 @@ import { INftDetail } from '@/types/web3'
 import { detectUrl, upperCase } from '@/utils/functions'
 import fetcherConfig from '@/configs/fetcher'
 import { IFetch } from '@/configs/fetcher/type'
-import { APP_CONFIG } from '@/configs/app'
+import { MORALIS_CONFIG } from '@/configs/app'
 
 const fetcher = async (params: IFetch) => {
-  let url = APP_CONFIG.MoralisAPI + params.url
+  let url = MORALIS_CONFIG.MoralisAPI + params.url
 
   url = url.replace('//', '/')
 
   return fetcherConfig({
     ...params,
     url,
+    headers: {
+      'X-API-Key': MORALIS_CONFIG.TokenMoralis,
+      Accept: 'application/json',
+    },
   })
 }
 
@@ -137,6 +141,10 @@ class MoralisService {
       url: apiPath,
       method: 'GET',
     })
+
+    console.log('====================================')
+    console.log({ nftRes })
+    console.log('====================================')
 
     if (nftRes) {
       const listNftWithAnkrFormat = await this.formatNftDataByAnkrFormat(nftRes?.data?.result, chainId)

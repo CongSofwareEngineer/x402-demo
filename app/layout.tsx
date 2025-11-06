@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 
 import { META_DATA_APP } from '@/configs/app'
 import AppkitProvider from '@/components/AppkitProvider'
+import Header from '@/components/Header'
 
 export const metadata: Metadata = {
   metadataBase: new URL(META_DATA_APP.url),
@@ -52,9 +53,10 @@ export default async function RootLayout({
 
   return (
     <html lang='en'>
-      <body className={`antialiased !bg-black`}>
+      <body className={`antialiased !bg-white`}>
         <AppkitProvider cookies={cookies}>
           {/* <CoinbaseProviders> */}
+          <Header />
           <main>{children}</main>
           {/* </CoinbaseProviders> */}
         </AppkitProvider>
