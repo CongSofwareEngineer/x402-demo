@@ -1,24 +1,18 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
+import { formatUnits } from 'viem'
 
 import NFTBalance from './NFTBalance'
 
 import { COINBASE_CONFIG } from '@/configs/app'
 import { copyToClipboard, ellipsisAddress } from '@/utils/functions'
+import useInfoPayment from '@/hooks/tank-query/useInfoPayment'
+import MyLoading from '@/components/MyLoading'
 
 export default function DemoPage() {
-  const [openResources, setOpenResources] = useState<{ [key: string]: boolean }>({
-    nftBalance: false,
-    tokenBalance: false,
-    transactionHistory: false,
-  })
+  const { data, isLoading, isFetching, refetch } = useInfoPayment()
 
-  const toggleResource = (resourceKey: string) => {
-    setOpenResources((prev) => ({
-      ...prev,
-      [resourceKey]: !prev[resourceKey],
-    }))
-  }
+  console.log({ data })
 
   return (
     <div className='min-h-screen bg-gray-50 py-8'>
@@ -30,7 +24,7 @@ export default function DemoPage() {
               <h1 className='text-3xl font-bold text-gray-900 mb-2'>x402demo</h1>
               <div className='flex items-center space-x-2 text-gray-600 mb-4'>
                 <div className='w-4 h-4 rounded-full border-2 border-gray-400' />
-                <span className='text-sm'>https://x402demo.bacoor-test001.xyz/</span>
+                <span className='text-sm'>{typeof window !== 'undefined' && window.location.origin}</span>
               </div>
               <p className='text-gray-500'>No Description</p>
             </div>
@@ -57,7 +51,8 @@ export default function DemoPage() {
                 <div>
                   <h3 className='text-gray-600 text-sm font-medium mb-2'>Transactions</h3>
                   <div className='flex items-baseline space-x-2'>
-                    <span className='text-2xl font-bold text-gray-900'>313.68K</span>
+                    {isLoading ? <MyLoading /> : <span className='text-2xl font-bold text-gray-900'>{data?.total_transactions}</span>}
+
                     <span className='text-red-500 text-sm font-medium'>Số lượng transaction</span>
                   </div>
                 </div>
@@ -82,7 +77,12 @@ export default function DemoPage() {
                 <div>
                   <h3 className='text-gray-600 text-sm font-medium mb-2'>Volume</h3>
                   <div className='flex items-baseline space-x-2'>
-                    <span className='text-2xl font-bold text-gray-900'>$289.22K</span>
+                    {isLoading ? (
+                      <MyLoading />
+                    ) : (
+                      <span className='text-2xl font-bold text-gray-900'>{formatUnits(data?.total_amount?.toString(), 6)}</span>
+                    )}
+
                     <span className='text-red-500 text-sm font-medium'>Số lượng USDC đã nhận</span>
                   </div>
                 </div>

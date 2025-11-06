@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   reactStrictMode: true,
+  redirects: async () => {
+    return [
+      {
+        source: '/',
+        destination: '/demo',
+        permanent: true, // Set to true if you want a 308 permanent redirect
+      },
+    ]
+  },
 }
 
 export default nextConfig

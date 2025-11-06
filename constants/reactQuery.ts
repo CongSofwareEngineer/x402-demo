@@ -1,1 +1,3 @@
-export const QUERY_KEY = {}
+export const QUERY_KEY = {
+  getInfoPayment: 'getInfoPayment',
+}

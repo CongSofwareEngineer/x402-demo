@@ -1,4 +1,4 @@
-import React, { useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useAccount, useSignTypedData } from 'wagmi'
 import { exact } from 'x402/schemes'
 import { preparePaymentHeader } from 'x402/client'
@@ -22,6 +22,33 @@ function NFTBalance() {
 
   const [dataListNFT, setDataListNFT] = useState<INftDetail[]>([])
   const [error, setError] = useState('')
+  const [addressScan, setAddressScan] = useState('')
+
+  useEffect(() => {
+    setAddressScan(address || '')
+  }, [address])
+
+  const formatData = async () => {
+    const urlScan =
+      'https://www.x402scan.com/api/trpc/public.stats.firstTransferTimestamp?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22recipients%22%3A%7B%22include%22%3A%5B%220x0495d60c927b97d67d5018c6aa65c9b2bebaeed9%22%5D%7D%7D%7D%7D'
+
+    const params = new URL(urlScan).searchParams
+    const inputEncoded = params.get('input')
+    const urlDecode = decodeURIComponent(urlScan)
+    const url1 = new URL(urlScan)
+    const paramUrl1 = url1.searchParams
+    const paramItemUrl1 = url1.searchParams.get('input')
+    const objParam = JSON.parse(decodeURIComponent(paramItemUrl1 || ''))
+
+    console.log({ objParam })
+
+    const url = '/api/x402/scan-info'
+    const res = await fetcher({
+      url,
+    })
+
+    console.log({ res })
+  }
 
   const handleGetData = async () => {
     if (isPending) return
@@ -115,10 +142,15 @@ function NFTBalance() {
     <DropItem desc='Get user NFT collection data' method='GET' title='nft-balance'>
       {isConnected ? (
         <div className='flex flex-col gap-4'>
+          <div>
+            <div className='block mb-2 font-medium !text-gray-700'>Address to scan:</div>
+            <input className='w-[50%] border border-gray-300 rounded-md p-2' value={addressScan} onChange={(e) => setAddressScan(e.target.value)} />
+          </div>
           <div className='w-full border-[1px] border-blue-700 justify-center flex items-center shadow-[0px_0px_8px_0px_rgba(0,_0,_0,_0.1)] py-3 rounded-[6px] mt-6'>
             <div
               className={`w-full flex justify-center items-center gap-3 font-mono text-sm !text-black flex items-center gap-2 ${isPending ? 'opacity-50 cursor-not-allowed ' : 'cursor-pointer '}`}
-              onClick={handleGetData}
+              // onClick={handleGetData}
+              onClick={formatData}
             >
               {isPending && <MyLoading />}
               Fetch USDC (${COINBASE_CONFIG.PAY_AMOUNT})
