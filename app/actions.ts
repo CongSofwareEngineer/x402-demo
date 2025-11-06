@@ -32,11 +32,6 @@ export async function verifyPayment(payload: string) {
 
   try {
     const payment = exact.evm.decodePayment(payload)
-    const listData = await list()
-
-    listData?.items[0]
-
-    console.log({ item: listData?.items[0], listData, urlServer: facilitator.url })
 
     const valid = await verify(payment, paymentRequirements)
 
