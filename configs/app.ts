@@ -20,6 +20,7 @@ export const COINBASE_CONFIG = {
   PAY_AMOUNT: '0.01',
   // PAY_ASSET: '0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2' as Address, // USDT on base
   PAY_ASSET: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' as Address, // USDC on base
+  PAY_ASSET_USDT: '0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2' as Address, // USDC on base
 }
 
 export const MORALIS_CONFIG = {

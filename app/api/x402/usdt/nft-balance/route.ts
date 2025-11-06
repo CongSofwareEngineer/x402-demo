@@ -32,13 +32,23 @@ export async function POST(req: NextRequest) {
     }
 
     const routePatterns = computeRoutePatterns({
-      'api/x402/nft-balance': {
-        price: COINBASE_CONFIG.PAY_AMOUNT,
+      'api/x402/usdt/nft-balance': {
+        price: {
+          amount: COINBASE_CONFIG.PAY_AMOUNT,
+          asset: {
+            address: COINBASE_CONFIG.PAY_ASSET_USDT,
+            decimals: 6,
+            eip712: {
+              name: 'USDT Coin',
+              version: '2',
+            },
+          },
+        },
         network: 'base',
       },
     })
 
-    const matchingRoute = findMatchingRoute(routePatterns, 'api/x402/nft-balance', 'POST')
+    const matchingRoute = findMatchingRoute(routePatterns, 'api/x402/usdt/nft-balance', 'POST')
 
     const { price, network, config = {} } = matchingRoute!.config || {}
     const atomicAmountForAsset = processPriceToAtomicAmount(price, network)
@@ -56,7 +66,7 @@ export async function POST(req: NextRequest) {
         mimeType: 'application/json',
         payTo: COINBASE_CONFIG.PAY_TO,
         maxTimeoutSeconds: COINBASE_CONFIG.MAX_TIMEOUT,
-        asset: COINBASE_CONFIG.PAY_ASSET,
+        asset: COINBASE_CONFIG.PAY_ASSET_USDT,
         outputSchema: {
           input: {
             type: 'http',
@@ -117,6 +127,7 @@ export async function POST(req: NextRequest) {
     } else {
       return new NextResponse(
         JSON.stringify({
+          atomicAmountForAsset,
           x402Version,
           error: errorMessages?.paymentRequired || 'X-PAYMENT header is required',
           accepts: paymentRequirements,
