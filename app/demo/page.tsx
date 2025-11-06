@@ -4,7 +4,6 @@ import { formatUnits } from 'viem'
 import BigNumber from 'bignumber.js'
 
 import NFTBalance from './NFTBalance'
-import NFTBalanceByUSDT from './NFTBalanceByUSDT'
 
 import { COINBASE_CONFIG } from '@/configs/app'
 import { copyToClipboard, ellipsisAddress } from '@/utils/functions'
@@ -56,8 +55,6 @@ export default function DemoPage() {
                     ) : (
                       <span className='text-2xl font-bold text-gray-900'>{BigNumber(data?.total_transactions || '0').toFormat()}</span>
                     )}
-
-                    <span className='text-red-500 text-sm font-medium'>Số lượng transaction</span>
                   </div>
                 </div>
                 <div className='w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center'>
@@ -85,11 +82,9 @@ export default function DemoPage() {
                       <MyLoading />
                     ) : (
                       <span className='text-2xl font-bold text-gray-900'>
-                        {BigNumber(formatUnits(BigInt(data?.total_amount?.toString() || '0'), 6)).toFormat()}
+                        ${BigNumber(formatUnits(BigInt(data?.total_amount?.toString() || '0'), 6)).toFormat()}
                       </span>
                     )}
-
-                    <span className='text-red-500 text-sm font-medium'>Số lượng USDC đã nhận</span>
                   </div>
                 </div>
                 <div className='w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center'>
@@ -119,7 +114,7 @@ export default function DemoPage() {
           <h2 className='text-xl font-semibold text-gray-900 mb-4'>Resources</h2>
 
           <NFTBalance />
-          <NFTBalanceByUSDT />
+          {/* <NFTBalanceByUSDT /> */}
           {/* <NFTBalance /> */}
         </div>
       </div>
