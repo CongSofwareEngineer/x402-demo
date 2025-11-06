@@ -135,7 +135,6 @@ export async function POST(req: NextRequest) {
     } else {
       return new NextResponse(
         JSON.stringify({
-          atomicAmountForAsset,
           x402Version,
           error: errorMessages?.paymentRequired || 'X-PAYMENT header is required',
           accepts: paymentRequirements,
