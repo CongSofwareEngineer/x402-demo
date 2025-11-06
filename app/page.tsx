@@ -10,7 +10,6 @@ import { getNetworkId } from 'x402/shared'
 import { verifyPayment } from './actions'
 
 import fetcher from '@/configs/fetcher'
-import { setCookie } from '@/Cookie'
 
 export default function HomePage() {
   const { open } = useAppKit()
@@ -70,7 +69,7 @@ export default function HomePage() {
       }
       const payment: string = exact.evm.encodePayment(paymentPayload)
 
-      await setCookie('payment-session', payment)
+      // await setCookie('payment-session', payment)
       // const payment =
       //   'eyJ4NDAyVmVyc2lvbiI6MSwic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiYmFzZSIsInBheWxvYWQiOnsic2lnbmF0dXJlIjoiMHg1NTU3MzBlNDY4MWI2YjMwZTAwZjNiN2ViMDhkZDM5MWMxNGYzY2JkOTQwMTc3M2ZiN2M3ODgwNzYzMDRiMjE1NWZjM2U4YjE4MDY4MGM2YWFjOGNmYTY2MzcwOGM5YzM2NTI2ZmYwYzZjMTRlNjQ1Nzk0ODFjNTk3NTZlNGMwYTFiIiwiYXV0aG9yaXphdGlvbiI6eyJmcm9tIjoiMHg5ZjI3NmFmNzlCMkI1REUyOTQ2QTg4QjBGZTI3MTczMThGOTI0ZDdjIiwidG8iOiIweDlmMjc2YWY3OUIyQjVERTI5NDZBODhCMEZlMjcxNzMxOEY5MjRkN2MiLCJ2YWx1ZSI6IjEwMCIsInZhbGlkQWZ0ZXIiOiIxNzYyMzMxMDI1IiwidmFsaWRCZWZvcmUiOiIxNzYyMzkxNjI1Iiwibm9uY2UiOiIweGU1MjUwOGY4NmIyODM2MjliNDY5NWY0OGQ0MTFmODU5OGE4NjJiYWVlMThjM2Q5ZjU1Y2QwZTUyMmIwNmUwMjYifX19'
 
