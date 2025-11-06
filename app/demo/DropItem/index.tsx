@@ -16,7 +16,7 @@ function DropItem({ title, desc, method, children }: DropItemProps) {
             <span className={`bg-purple-100 text-xs font-medium px-2.5 py-0.5 rounded ${method === 'POST' ? 'text-green-800' : ' text-blue-800 '}`}>
               {method}
             </span>
-            <span className='font-medium text-gray-900'>/${title}</span>
+            <span className='font-medium text-gray-900'>/{title}</span>
           </div>
           <span className='text-gray-500 text-sm'>{desc}</span>
         </div>

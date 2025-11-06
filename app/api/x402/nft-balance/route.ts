@@ -21,7 +21,11 @@ export async function POST(req: NextRequest) {
     let decodedPayment: PaymentPayload
     const url = new URL(req.url)
     const paymentHeader = req.headers.get('X-PAYMENT')
-    const body = (await req.json()) as { address: string }
+    let body = {}
+
+    try {
+      body = ((await req.json()) || {}) as { address: string }
+    } catch (error) { }
 
     const routePatterns = computeRoutePatterns({
       'api/x402/usdc/nft-balance': {

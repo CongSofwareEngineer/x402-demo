@@ -4,6 +4,7 @@ import { exact } from 'x402/schemes'
 import { preparePaymentHeader } from 'x402/client'
 import { getNetworkId } from 'x402/shared'
 import { PaymentPayload } from 'x402/types'
+import { useAppKit } from '@reown/appkit/react'
 
 import DropItem from '../DropItem'
 
@@ -17,6 +18,7 @@ function NFTBalance() {
   const [isPending, startTransition] = useTransition()
   const { address, isConnected } = useAccount()
   const { signTypedDataAsync } = useSignTypedData()
+  const { open } = useAppKit()
 
   const [dataListNFT, setDataListNFT] = useState<INftDetail[]>([])
   const [error, setError] = useState('')
@@ -28,11 +30,11 @@ function NFTBalance() {
         setDataListNFT([])
         setError('')
         const resRequire = await fetcher({
-          url: '/api/x402/usdc/nft-balance',
+          url: '/api/x402/nft-balance',
           method: 'POST',
-          body: {
-            address,
-          },
+          // body: {
+          //   address,
+          // },
         })
 
         const paymentRequirements = resRequire?.data?.accepts[0]
@@ -82,7 +84,7 @@ function NFTBalance() {
         console.log({ payment: payment })
 
         const res = await fetcher({
-          url: '/api/x402/usdc/nft-balance',
+          url: '/api/x402/nft-balance',
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,
@@ -168,7 +170,10 @@ function NFTBalance() {
                 </svg>
               </div>
               <p className='text-gray-600 mb-4'>Connect wallet</p>
-              <button className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200'>
+              <button
+                className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200'
+                onClick={() => open()}
+              >
                 Connect Wallet
               </button>
             </div>
