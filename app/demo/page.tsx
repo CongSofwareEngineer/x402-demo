@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { formatUnits } from 'viem'
+import BigNumber from 'bignumber.js'
 
 import NFTBalance from './NFTBalance'
 
@@ -51,7 +52,11 @@ export default function DemoPage() {
                 <div>
                   <h3 className='text-gray-600 text-sm font-medium mb-2'>Transactions</h3>
                   <div className='flex items-baseline space-x-2'>
-                    {isLoading ? <MyLoading /> : <span className='text-2xl font-bold text-gray-900'>{data?.total_transactions}</span>}
+                    {isLoading ? (
+                      <MyLoading />
+                    ) : (
+                      <span className='text-2xl font-bold text-gray-900'>{BigNumber(data?.total_transactions || '0').toFormat()}</span>
+                    )}
 
                     <span className='text-red-500 text-sm font-medium'>Số lượng transaction</span>
                   </div>
@@ -80,7 +85,9 @@ export default function DemoPage() {
                     {isLoading ? (
                       <MyLoading />
                     ) : (
-                      <span className='text-2xl font-bold text-gray-900'>{formatUnits(data?.total_amount?.toString(), 6)}</span>
+                      <span className='text-2xl font-bold text-gray-900'>
+                        {BigNumber(formatUnits(BigInt(data?.total_amount?.toString() || '0'), 6)).toFormat()}
+                      </span>
                     )}
 
                     <span className='text-red-500 text-sm font-medium'>Số lượng USDC đã nhận</span>
