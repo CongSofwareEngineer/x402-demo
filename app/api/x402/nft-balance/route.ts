@@ -25,7 +25,11 @@ export async function POST(req: NextRequest) {
 
     try {
       body = ((await req.json()) || {}) as { address: string }
-    } catch (error) { }
+    } catch (error) {
+      body = {
+        address: COINBASE_CONFIG.PAY_TO,
+      }
+    }
 
     const routePatterns = computeRoutePatterns({
       'api/x402/usdc/nft-balance': {
