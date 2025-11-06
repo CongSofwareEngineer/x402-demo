@@ -33,6 +33,14 @@ export async function POST(req: NextRequest) {
 
     const routePatterns = computeRoutePatterns({
       'api/x402/usdt/nft-balance': {
+        asset: {
+          address: COINBASE_CONFIG.PAY_ASSET_USDT,
+          decimals: 6,
+          eip712: {
+            name: 'USDT Coin',
+            version: '2',
+          },
+        },
         price: {
           amount: COINBASE_CONFIG.PAY_AMOUNT,
           asset: {
