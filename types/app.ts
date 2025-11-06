@@ -1,0 +1,26 @@
+export interface Token {
+  symbol?: string
+  price?: number
+  perETH?: string
+  perETHChangePercentage?: string
+  amountSwap?: number
+  //v4
+  changeByPoint?: string
+  pointBeforeCheck?: string
+  pointAfterCheck?: string
+}
+
+export type PoolToken = {
+  time?: string
+  arrToken?: Token[]
+  isSwap?: boolean
+  inputSwap?: string
+  outputSwap?: string
+  estETH?: string
+  indexUpdatePerETHOriginal?: number
+  [key: string]: unknown
+}
+
+export type ETHLastSwapTemp = {
+  [key: string]: string
+}
