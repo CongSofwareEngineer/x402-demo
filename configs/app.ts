@@ -1,11 +1,11 @@
 import { Address } from 'viem'
 
 export const META_DATA_APP = {
-  image: 'https://ipfs.pantograph.app/ipfs/QmfAoyFC6n4ve9TuQGwgVddYWwRjMrHy1LQXx24QAVWEHw?filename=message_banner.png',
+  image: 'https://x402-demo-two.vercel.app/logo.png',
   title: 'X402 Demo',
-  des: 'X402 Demor',
+  des: 'X402 Demo Description',
   icon: '/favicon.ico',
-  url: 'https://tradecoinpro.com',
+  url: 'https://x402-demo-two.vercel.app/',
 }
 
 export const APP_CONFIG = {
