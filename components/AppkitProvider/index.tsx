@@ -2,15 +2,15 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createAppKit } from '@reown/appkit/react'
-import { base, solana } from '@reown/appkit/networks'
+import { base } from '@reown/appkit/networks'
 import React, { type ReactNode } from 'react'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
-import { SolanaAdapter } from '@reown/appkit-adapter-solana'
+// import { SolanaAdapter } from '@reown/appkit-adapter-solana'
 
 import { networks, projectId, wagmiAdapter } from '@/configs/appkit'
 import { META_DATA_APP } from '@/configs/app'
 
-export const solanaAdapter = new SolanaAdapter()
+// export const solanaAdapter = new SolanaAdapter()
 
 // Set up queryClient
 const queryClient = new QueryClient({
@@ -35,9 +35,10 @@ const metadata = {
 
 // Create the modal
 const modal = createAppKit({
-  adapters: [wagmiAdapter, solanaAdapter],
+  // adapters: [wagmiAdapter, solanaAdapter],
+  adapters: [wagmiAdapter],
   projectId,
-  networks: [solana, ...networks],
+  networks: [...networks],
   defaultNetwork: base,
   metadata: metadata,
   features: {
