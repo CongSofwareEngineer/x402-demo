@@ -4,7 +4,7 @@ import { exact } from 'x402/schemes'
 import { preparePaymentHeader } from 'x402/client'
 import { getNetworkId } from 'x402/shared'
 import { PaymentPayload } from 'x402/types'
-import { useAppKit } from '@reown/appkit/react'
+import { useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 
 import DropItem from '../DropItem'
 
@@ -13,12 +13,14 @@ import fetcher from '@/configs/fetcher'
 import MyLoading from '@/components/MyLoading'
 import { COINBASE_CONFIG } from '@/configs/app'
 import { copyToClipboard } from '@/utils/functions'
+import { getChainTypeFromChainId } from '@/utils/chain'
 
 function NFTBalance() {
   const [isPending, startTransition] = useTransition()
   const { address, isConnected } = useAccount()
   const { signTypedDataAsync } = useSignTypedData()
   const { open } = useAppKit()
+  const { chainId } = useAppKitNetwork()
 
   const [dataListNFT, setDataListNFT] = useState<INftDetail[]>([])
   const [error, setError] = useState('')
@@ -34,8 +36,10 @@ function NFTBalance() {
     setError('')
     startTransition(async () => {
       try {
+        const chainType = getChainTypeFromChainId(chainId?.toString() || '')
+
         const resRequire = await fetcher({
-          url: '/api/x402/nft-balance',
+          url: `/api/${chainType}/nft`,
           method: 'POST',
           // body: {
           //   address,
@@ -89,7 +93,7 @@ function NFTBalance() {
         console.log({ payment: payment })
 
         const res = await fetcher({
-          url: '/api/x402/nft-balance',
+          url: `/api/${chainType}/nft`,
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,

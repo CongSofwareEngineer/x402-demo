@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     const chain = url.pathname.split('/')[2]
-    const config = X402Server.getConfigX402(req, `api/${chain}/nft-premium`, 'premium', 'POST')
+    const config = X402Server.getConfigX402(req, `api/${chain}/nft-premium`, 'basic', 'POST')
     const { errorMessages, paymentRequirements } = config || {}
 
     if (paymentHeader && paymentRequirements) {

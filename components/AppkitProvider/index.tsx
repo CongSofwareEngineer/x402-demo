@@ -8,6 +8,7 @@ import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
 import { SolanaAdapter } from '@reown/appkit-adapter-solana'
 
 import { networks, projectId, wagmiAdapter } from '@/configs/appkit'
+import { META_DATA_APP } from '@/configs/app'
 
 export const solanaAdapter = new SolanaAdapter()
 
@@ -28,8 +29,8 @@ if (!projectId) {
 const metadata = {
   name: 'x402-demo',
   description: 'X402 demo',
-  url: 'https://appkitexampleapp.com', // origin must match your domain & subdomain
-  icons: ['https://avatars.githubusercontent.com/u/179229932'],
+  url: META_DATA_APP.url, // origin must match your domain & subdomain
+  icons: [META_DATA_APP.icon],
 }
 
 // Create the modal
