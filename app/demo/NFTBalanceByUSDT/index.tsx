@@ -14,6 +14,8 @@ import MyLoading from '@/components/MyLoading'
 import { COINBASE_CONFIG } from '@/configs/app'
 import { copyToClipboard } from '@/utils/functions'
 import { getChainTypeFromChainId } from '@/utils/chain'
+import SelectFacilitator from '@/components/SelectFacilitator'
+import { FacilitatorType } from '@/server/x402'
 
 function NFTBalanceByUSDT() {
   const [isPending, startTransition] = useTransition()
@@ -25,6 +27,7 @@ function NFTBalanceByUSDT() {
   const [dataListNFT, setDataListNFT] = useState<INftDetail[]>([])
   const [error, setError] = useState('')
   const [addressScan, setAddressScan] = useState('')
+  const [typeFacilitator, setTypeFacilitator] = useState<FacilitatorType>('base')
 
   useEffect(() => {
     setAddressScan(address || '')
@@ -42,7 +45,7 @@ function NFTBalanceByUSDT() {
 
         const resRequire = await fetcher({
           // url: '/api/x402/nft-balance-premium',
-          url: `/api/${chainType}/nft-premium`,
+          url: `/api/${chainType}/nft?typeFacilitator=${typeFacilitator}`,
           method: 'POST',
           // body: {
           //   address,
@@ -90,7 +93,7 @@ function NFTBalanceByUSDT() {
         const payment: string = exact.evm.encodePayment(paymentPayload)
 
         const res = await fetcher({
-          url: `/api/${chainType}/nft-premium`,
+          url: `/api/${chainType}/nft?typeFacilitator=${typeFacilitator}`,
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,
@@ -121,9 +124,20 @@ function NFTBalanceByUSDT() {
     <DropItem desc='Get user NFT collection data with user premium fee' method='POST' title='nft-balance-premium'>
       {isConnected ? (
         <div className='flex flex-col gap-4'>
-          <div>
-            <div className='block mb-2 font-medium !text-gray-700'>Address to scan:</div>
-            <input className='w-[50%] border border-gray-300 rounded-md p-2' value={addressScan} onChange={(e) => setAddressScan(e.target.value)} />
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div>
+              <div className='block mb-2 font-medium !text-gray-700'>Address to scan:</div>
+              <input
+                className='w-full border border-gray-300 rounded-md p-2'
+                placeholder='Enter wallet address...'
+                value={addressScan}
+                onChange={(e) => setAddressScan(e.target.value)}
+              />
+            </div>
+            <div>
+              <div className='block mb-2 font-medium !text-gray-700'>Facilitator Type:</div>
+              <SelectFacilitator value={typeFacilitator} onChange={setTypeFacilitator} />
+            </div>
           </div>
           <div className='w-full border-[1px] border-blue-700 justify-center flex items-center shadow-[0px_0px_8px_0px_rgba(0,_0,_0,_0.1)] py-3 rounded-[6px] mt-6'>
             <div

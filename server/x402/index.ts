@@ -11,16 +11,14 @@ import { CONFIG_PAYMENT_X402, TYPE_FACILITATOR } from '@/constants/x402'
 import { getChainIdFromChainType } from '@/utils/chain'
 import { COINBASE_CONFIG } from '@/configs/app'
 import { TOKEN_SUPPORT_X402 } from '@/constants/token'
-type typeFacilitator = 'base' | 'payAI' | 'daydreams'
+export type FacilitatorType = 'base' | 'payAI' | 'daydreams'
 class X402Server {
-  static getFacilitatorUrl(type: typeFacilitator) {
+  static getFacilitatorUrl(type: FacilitatorType) {
     if (type === 'base') {
       return TYPE_FACILITATOR[type]
     }
 
-    return {
-      url: TYPE_FACILITATOR[type],
-    }
+    return TYPE_FACILITATOR[type]
   }
 
   static getConfigX402(req: NextRequest, router: string, type: 'basic' | 'premium', method: 'GET' | 'POST' = 'POST') {
@@ -85,10 +83,10 @@ class X402Server {
   static async settlePayment(
     paymentHeader: string,
     paymentRequirements: PaymentRequirements[],
-    typeFacilitator: typeFacilitator = 'base',
+    typeFacilitator: FacilitatorType = 'base',
     x402Version = 1
   ): Promise<SettleResponse & VerifyResponse> {
-    const { verify, settle } = useFacilitator(this.getFacilitatorUrl(typeFacilitator))
+    const { verify, settle } = useFacilitator(this.getFacilitatorUrl(typeFacilitator).facilitator)
 
     let decodedPayment = exact.evm.decodePayment(paymentHeader)
 

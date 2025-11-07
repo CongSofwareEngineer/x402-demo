@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const url = new URL(req.url)
+    const typeFacilitator = url.searchParams.get('typeFacilitator') as 'daydreams' | 'base' | 'payAI'
     const paymentHeader = req.headers.get('X-PAYMENT')
     let body = {} as { address: string; typeFacilitator: 'daydreams' | 'base' | 'payAI' }
 
@@ -24,13 +25,14 @@ export async function POST(req: NextRequest) {
         typeFacilitator: 'base',
       }
     }
+    console.log({ typeFacilitator })
 
     const chain = url.pathname.split('/')[2]
     const config = X402Server.getConfigX402(req, `api/${chain}/nft-premium`, 'basic', 'POST')
     const { errorMessages, paymentRequirements } = config || {}
 
     if (paymentHeader && paymentRequirements) {
-      const settlement = await X402Server.settlePayment(paymentHeader, paymentRequirements!, body.typeFacilitator)
+      const settlement = await X402Server.settlePayment(paymentHeader, paymentRequirements!, typeFacilitator || body.typeFacilitator)
 
       if (settlement?.success) {
         const listNFT = await MoralisService.getListNFTsByOwner({

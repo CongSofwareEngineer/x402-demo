@@ -3,9 +3,22 @@ import { abstract, avalanche, base, iotex, peaq, polygon, sei } from 'viem/chain
 import { facilitator } from '@coinbase/x402'
 
 export const TYPE_FACILITATOR = {
-  daydreams: 'https://facilitator.daydreams.systems' as `${string}://${string}`,
-  base: facilitator,
-  payAI: 'https://facilitator.payai.network' as `${string}://${string}`,
+  daydreams: {
+    facilitator: {
+      url: 'https://facilitator.daydreams.systems' as `${string}://${string}`,
+    },
+    icon: 'https://www.x402scan.com/router-logo-small.png',
+  },
+  base: {
+    facilitator: facilitator,
+    icon: 'https://www.x402scan.com/coinbase.png',
+  },
+  payAI: {
+    facilitator: {
+      url: 'https://facilitator.payai.network' as `${string}://${string}`,
+    },
+    icon: 'https://www.x402scan.com/payai.png',
+  },
 }
 
 export const CHAIN_SUPPORT_X402 = {
