@@ -13,7 +13,9 @@ function DropItem({ title, desc, method, children }: DropItemProps) {
       <div className='flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors' onClick={() => setOpen(!open)}>
         <div className='flex items-center space-x-4'>
           <div className='flex items-center space-x-2'>
-            <span className={`bg-purple-100 text-xs font-medium px-2.5 py-0.5 rounded ${method === 'POST' ? 'text-green-800' : ' text-blue-800 '}`}>
+            <span
+              className={`bg-green-100 text-xs border border-green-700 font-medium px-2.5 py-1.5 rounded ${method === 'POST' ? 'text-green-800' : ' text-blue-800 '}`}
+            >
               {method}
             </span>
             <span className='font-medium text-gray-900'>/{title}</span>

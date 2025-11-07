@@ -2,6 +2,7 @@
 import React from 'react'
 import { formatUnits } from 'viem'
 import BigNumber from 'bignumber.js'
+import Image from 'next/image'
 
 import NFTBalance from './NFTBalance'
 import NFTBalanceByUSDT from './NFTBalanceByUSDT'
@@ -10,9 +11,26 @@ import { COINBASE_CONFIG } from '@/configs/app'
 import { copyToClipboard, ellipsisAddress } from '@/utils/functions'
 import useInfoPayment from '@/hooks/tank-query/useInfoPayment'
 import MyLoading from '@/components/MyLoading'
+import { images } from '@/configs/images'
 
 export default function DemoPage() {
   const { data, isLoading } = useInfoPayment()
+
+  const renderVolume = () => {
+    if (data?.total_amount) {
+      const valueEther = formatUnits(BigInt(data?.total_amount), 6)
+
+      if (BigNumber(valueEther).gt(1000)) {
+        const value = BigNumber(valueEther).div(1000).decimalPlaces(2, BigNumber.ROUND_DOWN).toFormat()
+
+        return `${value}K`
+      }
+
+      return BigNumber(valueEther).toFormat()
+    }
+
+    return <></>
+  }
 
   return (
     <div className='min-h-screen bg-gray-50 py-8'>
@@ -45,10 +63,10 @@ export default function DemoPage() {
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
             {/* Transactions Card */}
-            <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+            <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-5'>
               <div className='flex items-center justify-between'>
                 <div>
-                  <h3 className='text-gray-600 text-sm font-medium mb-2'>Transactions</h3>
+                  <h3 className='text-gray-600 text-lgfont-medium mb-2'>Transactions</h3>
                   <div className='flex items-baseline space-x-2'>
                     {isLoading ? (
                       <MyLoading />
@@ -57,18 +75,9 @@ export default function DemoPage() {
                     )}
                   </div>
                 </div>
-                <div className='w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center'>
-                  <svg className='w-6 h-6 text-blue-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path d='M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} />
-                  </svg>
+                <div className='  rounded-lg flex items-center justify-center'>
+                  <Image alt='Icon Info Detail' height={100} src={images.iconTotalTransaction} width={100} />
                 </div>
-              </div>
-
-              {/* Simple Chart Representation */}
-              <div className='mt-4 flex items-end space-x-1 h-16'>
-                {[20, 35, 25, 40, 30, 45, 35, 50, 40, 55, 45, 60].map((height, index) => (
-                  <div key={index} className='bg-blue-200 rounded-t flex-1' style={{ height: `${height}%` }} />
-                ))}
               </div>
             </div>
 
@@ -76,34 +85,14 @@ export default function DemoPage() {
             <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
               <div className='flex items-center justify-between'>
                 <div>
-                  <h3 className='text-gray-600 text-sm font-medium mb-2'>Volume</h3>
+                  <h3 className='text-gray-600 text-lg font-medium mb-2 '>Volume</h3>
                   <div className='flex items-baseline space-x-2'>
-                    {isLoading ? (
-                      <MyLoading />
-                    ) : (
-                      <span className='text-2xl font-bold text-gray-900'>
-                        ${BigNumber(formatUnits(BigInt(data?.total_amount?.toString() || '0'), 6)).toFormat()}
-                      </span>
-                    )}
+                    {isLoading ? <MyLoading /> : <span className='text-2xl font-bold text-gray-900'>${renderVolume()}</span>}
                   </div>
                 </div>
-                <div className='w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center'>
-                  <svg className='w-6 h-6 text-purple-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path
-                      d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                    />
-                  </svg>
+                <div className='  rounded-lg flex items-center justify-center'>
+                  <Image alt='Icon Info Detail' height={100} src={images.iconTotalVolume} width={100} />
                 </div>
-              </div>
-
-              {/* Simple Chart Representation */}
-              <div className='mt-4 flex items-end space-x-1 h-16'>
-                {[30, 25, 45, 35, 50, 40, 60, 45, 55, 40, 65, 50].map((height, index) => (
-                  <div key={index} className='bg-purple-200 rounded-t flex-1' style={{ height: `${height}%` }} />
-                ))}
               </div>
             </div>
           </div>
