@@ -2,6 +2,8 @@
 import { useAppKit, useAppKitAccount, useDisconnect } from '@reown/appkit/react'
 import React from 'react'
 
+import SelectChain from '../SelectChain'
+
 export default function Header() {
   const { open } = useAppKit()
   const { address, isConnected } = useAppKitAccount()
@@ -34,24 +36,30 @@ export default function Header() {
           <nav className='hidden md:flex items-center space-x-8' />
 
           {/* Wallet Connection */}
-          <div className='flex items-center space-x-4'>
+          <div className='flex items-center space-x-3'>
             {!isConnected ? (
               <button
-                className='bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors duration-200 shadow-md'
+                className='bg-white text-blue-600 px-6 py-2.5 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105'
                 onClick={() => open({ view: 'Connect' })}
               >
                 Connect Wallet
               </button>
             ) : (
               <div className='flex items-center space-x-3'>
-                <div className='bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2'>
+                {/* Chain Selector */}
+                <SelectChain />
+
+                {/* Wallet Address */}
+                <div className='bg-white/15 backdrop-blur-sm rounded-xl px-4 py-2.5 border border-white/20'>
                   <div className='flex items-center space-x-2'>
-                    <div className='w-3 h-3 bg-green-400 rounded-full animate-pulse' />
-                    <span className='text-white font-mono text-sm'>{truncateAddress(address || '')}</span>
+                    <div className='w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50' />
+                    <span className='text-white font-mono text-sm font-medium tracking-wider'>{truncateAddress(address || '')}</span>
                   </div>
                 </div>
+
+                {/* Disconnect Button */}
                 <button
-                  className='bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors duration-200'
+                  className='bg-red-500/20 hover:bg-red-500/30 text-white px-4 py-2.5 rounded-xl transition-all duration-200 border border-red-400/30 hover:border-red-400/50 font-medium text-sm'
                   onClick={() => disconnect()}
                 >
                   Disconnect

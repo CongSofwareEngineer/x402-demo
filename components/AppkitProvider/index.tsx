@@ -2,11 +2,14 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createAppKit } from '@reown/appkit/react'
-import { base } from '@reown/appkit/networks'
+import { base, solana } from '@reown/appkit/networks'
 import React, { type ReactNode } from 'react'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
+import { SolanaAdapter } from '@reown/appkit-adapter-solana'
 
-import { projectId, wagmiAdapter } from '@/configs/appkit'
+import { networks, projectId, wagmiAdapter } from '@/configs/appkit'
+
+export const solanaAdapter = new SolanaAdapter()
 
 // Set up queryClient
 const queryClient = new QueryClient({
@@ -23,22 +26,29 @@ if (!projectId) {
 
 // Set up metadata
 const metadata = {
-  name: 'x402-example',
-  description: 'X402 Example',
+  name: 'x402-demo',
+  description: 'X402 demo',
   url: 'https://appkitexampleapp.com', // origin must match your domain & subdomain
   icons: ['https://avatars.githubusercontent.com/u/179229932'],
 }
 
 // Create the modal
 const modal = createAppKit({
-  adapters: [wagmiAdapter],
+  adapters: [wagmiAdapter, solanaAdapter],
   projectId,
-  networks: [base],
+  networks: [solana, ...networks],
   defaultNetwork: base,
   metadata: metadata,
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration
+    socials: ['google'],
   },
+  enableInjected: true,
+  enableNetworkSwitch: true,
+  enableWalletConnect: true,
+  enableEIP6963: true,
+  enableReconnect: true,
+  enableWallets: true,
 })
 
 function AppkitProvider({ children, cookies }: { children: ReactNode; cookies: string | null }) {

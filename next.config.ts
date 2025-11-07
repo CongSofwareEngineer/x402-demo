@@ -9,6 +9,25 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        pathname: '/**',
+      },
+    ],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+    styledComponents: {
+      ssr: true,
+      minify: true,
+    },
+  },
   redirects: async () => {
     return [
       {

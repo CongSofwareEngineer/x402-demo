@@ -4,7 +4,7 @@ import { exact } from 'x402/schemes'
 import { preparePaymentHeader } from 'x402/client'
 import { getNetworkId } from 'x402/shared'
 import { PaymentPayload } from 'x402/types'
-import { useAppKit } from '@reown/appkit/react'
+import { useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 
 import DropItem from '../DropItem'
 
@@ -13,12 +13,14 @@ import fetcher from '@/configs/fetcher'
 import MyLoading from '@/components/MyLoading'
 import { COINBASE_CONFIG } from '@/configs/app'
 import { copyToClipboard } from '@/utils/functions'
+import { getChainTypeFromChainId } from '@/utils/chain'
 
 function NFTBalanceByUSDT() {
   const [isPending, startTransition] = useTransition()
   const { address, isConnected } = useAccount()
   const { signTypedDataAsync } = useSignTypedData()
   const { open } = useAppKit()
+  const { chainId } = useAppKitNetwork()
 
   const [dataListNFT, setDataListNFT] = useState<INftDetail[]>([])
   const [error, setError] = useState('')
@@ -30,12 +32,17 @@ function NFTBalanceByUSDT() {
 
   const handleGetData = async () => {
     if (isPending) return
+    setDataListNFT([])
+    setError('')
     startTransition(async () => {
       try {
-        setDataListNFT([])
-        setError('')
+        const chainType = getChainTypeFromChainId(chainId?.toString() || '')
+
+        console.log({ chainType })
+
         const resRequire = await fetcher({
-          url: '/api/x402/nft-balance-premium',
+          // url: '/api/x402/nft-balance-premium',
+          url: `/api/${chainType}/nft-premium`,
           method: 'POST',
           // body: {
           //   address,
@@ -46,7 +53,6 @@ function NFTBalanceByUSDT() {
 
         const unSignedPaymentHeader = preparePaymentHeader(address!, 1, paymentRequirements)
 
-        console.log({ unSignedPaymentHeader })
         const eip712Data = {
           types: {
             TransferWithAuthorization: [
@@ -68,10 +74,7 @@ function NFTBalanceByUSDT() {
           message: unSignedPaymentHeader.payload.authorization,
         }
 
-        console.log({ eip712Data })
         const signature = await signTypedDataAsync(eip712Data)
-
-        console.log({ signature })
 
         const paymentPayload: PaymentPayload = {
           ...unSignedPaymentHeader,
@@ -86,10 +89,8 @@ function NFTBalanceByUSDT() {
         // }
         const payment: string = exact.evm.encodePayment(paymentPayload)
 
-        console.log({ payment: payment })
-
         const res = await fetcher({
-          url: '/api/x402/nft-balance-premium',
+          url: `/api/${chainType}/nft-premium`,
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,

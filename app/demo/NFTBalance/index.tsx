@@ -30,10 +30,10 @@ function NFTBalance() {
 
   const handleGetData = async () => {
     if (isPending) return
+    setDataListNFT([])
+    setError('')
     startTransition(async () => {
       try {
-        setDataListNFT([])
-        setError('')
         const resRequire = await fetcher({
           url: '/api/x402/nft-balance',
           method: 'POST',
