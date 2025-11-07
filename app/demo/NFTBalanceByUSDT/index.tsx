@@ -45,7 +45,7 @@ function NFTBalanceByUSDT() {
 
         const resRequire = await fetcher({
           // url: '/api/x402/nft-balance-premium',
-          url: `/api/${chainType}/nft?typeFacilitator=${typeFacilitator}`,
+          url: `/api/x402/${typeFacilitator}/${chainType}/nft-premium`,
           method: 'POST',
           // body: {
           //   address,
@@ -93,7 +93,7 @@ function NFTBalanceByUSDT() {
         const payment: string = exact.evm.encodePayment(paymentPayload)
 
         const res = await fetcher({
-          url: `/api/${chainType}/nft?typeFacilitator=${typeFacilitator}`,
+          url: `/api/x402/${typeFacilitator}/${chainType}/nft-premium`,
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,

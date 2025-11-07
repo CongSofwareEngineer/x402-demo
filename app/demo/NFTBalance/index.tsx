@@ -29,8 +29,6 @@ function NFTBalance() {
   const [addressScan, setAddressScan] = useState('')
   const [typeFacilitator, setTypeFacilitator] = useState<FacilitatorType>('base')
 
-  console.log({ typeFacilitator })
-
   useEffect(() => {
     setAddressScan(address || '')
   }, [address])
@@ -44,18 +42,14 @@ function NFTBalance() {
         const chainType = getChainTypeFromChainId(chainId?.toString() || '')
 
         const resRequire = await fetcher({
-          url: `/api/${chainType}/nft?typeFacilitator=${typeFacilitator}`,
+          url: `/api/x402/${typeFacilitator}/${chainType}/nft`,
           method: 'POST',
-          // body: {
-          //   address,
-          // },
         })
 
         const paymentRequirements = resRequire?.data?.accepts[0]
 
         const unSignedPaymentHeader = preparePaymentHeader(address!, 1, paymentRequirements)
 
-        console.log({ unSignedPaymentHeader })
         const eip712Data = {
           types: {
             TransferWithAuthorization: [
@@ -77,10 +71,7 @@ function NFTBalance() {
           message: unSignedPaymentHeader.payload.authorization,
         }
 
-        console.log({ eip712Data })
         const signature = await signTypedDataAsync(eip712Data)
-
-        console.log({ signature })
 
         const paymentPayload: PaymentPayload = {
           ...unSignedPaymentHeader,
@@ -89,16 +80,10 @@ function NFTBalance() {
             signature,
           },
         }
-        // const dataFake = {
-        //   payment:
-        //     'eyJ4NDAyVmVyc2lvbiI6MSwic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiYmFzZSIsInBheWxvYWQiOnsic2lnbmF0dXJlIjoiMHhjNmZjMjgyMTk2OTY1NjYzNDg0OWVkYTY0N2FiN2RmZTJhNjA2ZjQzYmUyZWQ3MDUwZWY4YTgwOWYxYWFhZjNkNDRkMDNmYTQ0NmU3YTkxMmI1YjdkZTU0ZmRlOTIwYmVkYzJlMzE1YTVjOTIyMjA1ZjJiYjM5MDdlZThmOGVlYjFjIiwiYXV0aG9yaXphdGlvbiI6eyJmcm9tIjoiMHg5ZjI3NmFmNzliMmI1ZGUyOTQ2YTg4YjBmZTI3MTczMThmOTI0ZDdjIiwidG8iOiIweDlmMjc2YWY3OWIyYjVkZTI5NDZhODhiMGZlMjcxNzMxOGY5MjRkN2MiLCJ2YWx1ZSI6IjEwMDAwIiwidmFsaWRBZnRlciI6IjE3NjI0MTEzNjQiLCJ2YWxpZEJlZm9yZSI6IjE3NjI0NzE5NjQiLCJub25jZSI6IjB4MzU2MTQ0ZDI0NmM3ZDNjMDdhNmM5NzAyZjU0MDg1OWExZDM2NGM2OTNjMzhlNDEyMGJiNzg2N2IyYTViMDdmYiJ9fX0=',
-        // }
         const payment: string = exact.evm.encodePayment(paymentPayload)
 
-        console.log({ payment: payment })
-
         const res = await fetcher({
-          url: `/api/${chainType}/nft?typeFacilitator=${typeFacilitator}`,
+          url: `/api/x402/${typeFacilitator}/${chainType}/nft`,
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,
@@ -114,13 +99,11 @@ function NFTBalance() {
         if (res?.data?.error) {
           setError(res?.data?.error)
         }
-
-        console.log({ res })
       } catch (error: any) {
         if (error?.message?.includes('Missing or invalid parameters')) {
           setError('User rejected methods.')
         }
-        console.log({ error })
+        setError('Settlement failed')
       }
     })
   }

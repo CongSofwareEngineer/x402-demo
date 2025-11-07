@@ -11,7 +11,7 @@ const getData = async (): Promise<{
   latest_block_timestamp: string
 }> => {
   const res = await fetcher({
-    url: '/api/x402/scan-info',
+    url: '/api/scan-info',
   })
 
   return res?.data as {

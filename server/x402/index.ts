@@ -23,7 +23,7 @@ class X402Server {
 
   static getConfigX402(req: NextRequest, router: string, type: 'basic' | 'premium', method: 'GET' | 'POST' = 'POST') {
     const url = new URL(req.url)
-    const chainType = url.pathname.split('/')[2]
+    const chainType = url.pathname.split('/')[4]
 
     const chainId = getChainIdFromChainType(chainType)
 
