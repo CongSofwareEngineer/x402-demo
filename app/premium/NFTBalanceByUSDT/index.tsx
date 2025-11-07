@@ -145,7 +145,7 @@ function NFTBalanceByUSDT() {
               onClick={handleGetData}
             >
               {isPending && <MyLoading />}
-              Fetch USDT (${COINBASE_CONFIG.PAY_AMOUNT_PREMIUM})
+              Fetch USDc (${COINBASE_CONFIG.PAY_AMOUNT_PREMIUM})
             </div>
           </div>
 
