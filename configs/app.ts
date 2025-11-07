@@ -1,9 +1,9 @@
 export const META_DATA_APP = {
-  image: 'https://x402-demo-two.vercel.app/logo.png',
-  title: 'X402 Demo',
-  des: 'X402 Demo Description',
+  image: 'https://x402-premium.vercel.app/logo.png',
+  title: 'X402 Premium',
+  des: 'X402 Premium Description',
   icon: '/favicon.ico',
-  url: 'https://x402-demo-two.vercel.app/',
+  url: 'https://x402-premium.vercel.app/',
 }
 
 export const APP_CONFIG = {

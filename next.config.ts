@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/',
-        destination: '/demo',
+        destination: '/premium',
         permanent: true, // Set to true if you want a 308 permanent redirect
       },
     ]
