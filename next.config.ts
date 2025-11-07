@@ -1,9 +1,6 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  experimental: {
-    optimizePackageImports: ['x402-next', '@coinbase/onchainkit', '@coinbase/x402'],
-  },
   /* config options here */
   eslint: {
     ignoreDuringBuilds: true,
@@ -23,10 +20,6 @@ const nextConfig: NextConfig = {
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-    styledComponents: {
-      ssr: true,
-      minify: true,
-    },
   },
   redirects: async () => {
     return [

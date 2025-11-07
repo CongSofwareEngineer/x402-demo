@@ -9,8 +9,6 @@ export default function Header() {
   const { address, isConnected } = useAppKitAccount()
   const { disconnect } = useDisconnect()
 
-  console.log({ isConnected })
-
   const truncateAddress = (addr: string) => {
     if (!addr) return ''
 

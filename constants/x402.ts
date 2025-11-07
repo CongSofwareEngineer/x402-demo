@@ -9,42 +9,42 @@ export const TYPE_FACILITATOR = {
 }
 
 export const CHAIN_SUPPORT_X402 = {
-  [base.id]: {
+  [8453]: {
     ...base,
     chainType: 'base',
     iconChain: 'https://icons.llamao.fi/icons/chains/rsz_base.jpg',
   },
-  [abstract.id]: {
+  [2741]: {
     ...abstract,
     chainType: 'abstract',
     iconChain: 'https://icons.llamao.fi/icons/chains/rsz_abstract.jpg',
   },
-  [avalanche.id]: {
+  [43114]: {
     ...avalanche,
     chainType: 'avalanche',
     iconChain: 'https://icons.llamao.fi/icons/chains/rsz_avalanche.jpg',
   },
-  [sei.id]: {
+  [1329]: {
     ...sei,
     chainType: 'sei',
     iconChain: 'https://icons.llamao.fi/icons/chains/rsz_sei.jpg',
   },
-  [polygon.id]: {
+  [137]: {
     ...polygon,
     chainType: 'polygon',
     iconChain: 'https://icons.llamao.fi/icons/chains/rsz_polygon.jpg',
   },
-  [peaq.id]: {
+  [3338]: {
     ...peaq,
     chainType: 'peaq',
     iconChain: 'https://icons.llamao.fi/icons/chains/rsz_peaq.jpg',
   },
-  [iotex.id]: {
+  [4689]: {
     ...iotex,
     chainType: 'iotex',
     iconChain: 'https://icons.llamao.fi/icons/chains/rsz_iotex.jpg',
   },
-  [solana.id]: {
+  ['5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']: {
     ...solana,
     chainType: 'solana',
     iconChain: 'https://icons.llamao.fi/icons/chains/rsz_solana.jpg',
