@@ -24,7 +24,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const config = X402Server.getConfigX402(req, `/api/x402/${typeFacilitator}/${chainType}/nft-premium`, 'premium', 'POST')
+    const config = X402Server.getConfigX402(
+      req,
+      `/api/x402/${typeFacilitator}/${chainType}/nft-premium`,
+      'premium',
+      'POST',
+      'Get your NFT balance on Base chain with premium features'
+    )
     const { errorMessages, paymentRequirements } = config || {}
 
     if (paymentHeader && paymentRequirements) {

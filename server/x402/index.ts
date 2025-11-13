@@ -21,7 +21,7 @@ class X402Server {
     return TYPE_FACILITATOR[type]
   }
 
-  static getConfigX402(req: NextRequest, router: string, type: 'basic' | 'premium', method: 'GET' | 'POST' = 'POST') {
+  static getConfigX402(req: NextRequest, router: string, type: 'basic' | 'premium', method: 'GET' | 'POST' = 'POST', des?: string) {
     const url = new URL(req.url)
     const chainType = url.pathname.split('/')[4]
 
@@ -53,7 +53,7 @@ class X402Server {
           network: chainType as any,
           maxAmountRequired: maxAmountRequired,
           resource: url.href,
-          description: 'Access to protected content',
+          description: des || 'Access to protected content',
           mimeType: 'application/json',
           payTo: COINBASE_CONFIG.PAY_TO,
           maxTimeoutSeconds: COINBASE_CONFIG.MAX_TIMEOUT,
@@ -68,7 +68,7 @@ class X402Server {
                 address: {
                   type: 'string',
                   required: false,
-                  description: 'Your address to get access', // for nested objects
+                  description: 'Your address to search data', // for nested objects
                 },
               },
               ...inputSchema,
