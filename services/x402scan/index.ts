@@ -24,29 +24,16 @@ class X402ScanService {
     return res?.data?.[0]?.result?.data?.json
   }
 
-  static async getInfo(startData: string, address?: string): Promise<string> {
-    const params = {
-      0: {
-        json: {
-          recipients: {
-            include: [address || COINBASE_CONFIG.PAY_TO],
-          },
-          startDate: startData,
-        },
-        meta: {
-          values: {
-            startDate: ['Date'],
-          },
-          v: 1,
-        },
-      },
-    }
+  static async getInfo(): Promise<string> {
+    const params = { json: { recipients: { include: [COINBASE_CONFIG.PAY_TO] }, timeframe: 30 } }
 
     const res = await fetcher({
-      url: '/public.stats.overall?batch=1&input=' + encodeURIComponent(JSON.stringify(params)),
+      url: '/public.stats.overall?input=' + encodeURIComponent(JSON.stringify(params)),
     })
 
-    return res?.data?.[0]?.result?.data?.json
+    console.log({ res: res?.data?.data?.json })
+
+    return res?.data?.result?.data?.json
   }
 }
 

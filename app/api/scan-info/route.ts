@@ -6,9 +6,7 @@ import X402ScanService from '@/services/x402scan'
 
 export async function GET(req: NextRequest) {
   try {
-    const resFirstTx = await X402ScanService.getFirstTransferTimestamp()
-
-    const res = await X402ScanService.getInfo(resFirstTx)
+    const res = await X402ScanService.getInfo()
 
     return new Response(
       JSON.stringify({
