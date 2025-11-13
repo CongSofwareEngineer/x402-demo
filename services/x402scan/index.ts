@@ -25,7 +25,7 @@ class X402ScanService {
   }
 
   static async getInfo(): Promise<string> {
-    const params = { json: { recipients: { include: [COINBASE_CONFIG.PAY_TO] }, timeframe: 30 } }
+    const params = { json: { recipients: { include: [COINBASE_CONFIG.PAY_TO] }, timeframe: 300 } }
 
     const res = await fetcher({
       url: '/public.stats.overall?input=' + encodeURIComponent(JSON.stringify(params)),

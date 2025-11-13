@@ -63,6 +63,14 @@ class X402Server {
               type: 'http',
               method: method,
               discoverable: true,
+              bodyType: 'json',
+              bodyFields: {
+                address: {
+                  type: 'string',
+                  required: false,
+                  description: 'Your address to get access', // for nested objects
+                },
+              },
               ...inputSchema,
             },
             output: outputSchema,
