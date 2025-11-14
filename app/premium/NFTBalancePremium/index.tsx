@@ -11,11 +11,11 @@ import DropItem from '../DropItem'
 import { INftDetail } from '@/types/web3'
 import fetcher from '@/configs/fetcher'
 import MyLoading from '@/components/MyLoading'
-import { COINBASE_CONFIG } from '@/configs/app'
 import { copyToClipboard } from '@/utils/functions'
 import { getChainTypeFromChainId } from '@/utils/chain'
 import SelectFacilitator from '@/components/SelectFacilitator'
 import { FacilitatorType } from '@/server/x402'
+import { CONFIG_PAYMENT_X402 } from '@/constants/x402'
 
 function NFTBalancePremium() {
   const [isPending, startTransition] = useTransition()
@@ -149,7 +149,7 @@ function NFTBalancePremium() {
               onClick={handleGetData}
             >
               {isPending && <MyLoading />}
-              Fetch USDc (${COINBASE_CONFIG.PAY_AMOUNT_PREMIUM})
+              Fetch USDc (${CONFIG_PAYMENT_X402.premium.amount})
             </div>
           </div>
 

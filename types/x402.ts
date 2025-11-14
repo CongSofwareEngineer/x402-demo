@@ -1,4 +1,6 @@
-export type FieldDef = {
+import { FacilitatorType } from '@/server/x402'
+
+export interface FieldDef {
   type?: string
   required?: boolean | string[]
   description?: string
@@ -14,4 +16,10 @@ export interface ConfigCustom {
     headerFields?: Record<string, FieldDef>
   }
   output?: {}
+}
+
+export interface BodyRequest {
+  address: string
+  chain?: string
+  facilitator?: FacilitatorType
 }

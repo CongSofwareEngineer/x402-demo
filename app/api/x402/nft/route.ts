@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       body.chain = 'base'
     }
 
-    const config = X402Server.getConfigX402(req, `/api/x402/nft`, 'basic', body.chain, {
+    const config = X402Server.getConfigX402(req, `/api/x402/nft`, 'basic', body, {
       description: `Get your NFT balance on ${body.chain} chain`,
       input: {
         bodyFields: {
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
             type: 'string',
             required: false,
             description:
-              'List chain support: [base, sei, avalanche, polygon] \n Default is chain base. The chain type to search NFT, e.g., base, abstract, avalanche.\n Facilitator base support chain: base \n Facilitator payAI support chain: base, sei, avalanche, polygon \n Facilitator daydreams support chain: base, polygon ', // for nested objects
+              'List chain support: [base, sei, avalanche, polygon]. Default is chain base.\n Facilitator base support chain: base. \n Facilitator payAI support chain: base, sei, avalanche, polygon. \n Facilitator daydreams support chain: base, polygon ', // for nested objects
           },
           facilitator: {
             type: 'string',
@@ -50,8 +50,6 @@ export async function POST(req: NextRequest) {
         },
       },
     })
-
-    console.log({ config })
 
     const { errorMessages, paymentRequirements } = config || {}
 

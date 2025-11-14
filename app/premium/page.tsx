@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import Image from 'next/image'
 
 import NFTBalance from './NFTBalance'
-import NFTBalanceByUSDT from './NFTBalanceByUSDT'
+import NFTBalancePremium from './NFTBalancePremium'
 
 import { COINBASE_CONFIG } from '@/configs/app'
 import { copyToClipboard, ellipsisAddress } from '@/utils/functions'
@@ -103,7 +103,7 @@ export default function DemoPage() {
           <h2 className='text-xl font-semibold text-gray-900 mb-4'>Resources</h2>
 
           <NFTBalance />
-          <NFTBalanceByUSDT />
+          <NFTBalancePremium />
           {/* <NFTBalance /> */}
         </div>
       </div>

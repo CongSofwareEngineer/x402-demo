@@ -66,10 +66,10 @@ export const CHAIN_SUPPORT_X402 = {
 
 export const CONFIG_PAYMENT_X402 = {
   basic: {
-    amount: '0.01',
+    amount: '0.1',
   },
   premium: {
-    amount: '10',
+    amount: '0.5',
   },
 } as {
   basic: {

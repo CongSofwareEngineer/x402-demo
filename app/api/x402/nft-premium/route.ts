@@ -10,7 +10,6 @@ const x402Version = 1
 export async function POST(req: NextRequest) {
   try {
     const url = new URL(req.url!)
-    const typeFacilitator = url.pathname.split('/')[3] as FacilitatorType
     const chainType = url.pathname.split('/')[4]
     const paymentHeader = req.headers.get('X-PAYMENT')
 
@@ -30,8 +29,8 @@ export async function POST(req: NextRequest) {
       body.chain = 'base'
     }
 
-    const config = X402Server.getConfigX402(req, `/api/x402/nft-premium`, 'premium', 'POST', {
-      description: `Get your NFT balance on ${body.chain} chain`,
+    const config = X402Server.getConfigX402(req, `/api/x402/nft-premium`, 'premium', body, {
+      description: `Get your NFT balance premium on ${body.chain} chain for user premium`,
       input: {
         bodyFields: {
           address: {
@@ -43,7 +42,7 @@ export async function POST(req: NextRequest) {
             type: 'string',
             required: false,
             description:
-              'List chain support: [base, sei, avalanche, polygon] \n Default is chain base. The chain type to search NFT, e.g., base, abstract, avalanche.\n Facilitator base support chain: base \n Facilitator payAI support chain: base, sei, avalanche, polygon \n Facilitator daydreams support chain: base, polygon ', // for nested objects
+              'List chain support: [base, sei, avalanche, polygon]. Default is chain base.\n Facilitator base support chain: base. \n Facilitator payAI support chain: base, sei, avalanche, polygon. \n Facilitator daydreams support chain: base, polygon ', // for nested objects
           },
           facilitator: {
             type: 'string',
@@ -56,7 +55,7 @@ export async function POST(req: NextRequest) {
     const { errorMessages, paymentRequirements } = config || {}
 
     if (paymentHeader && paymentRequirements) {
-      const settlement = await X402Server.settlePayment(paymentHeader, paymentRequirements!, typeFacilitator || 'base')
+      const settlement = await X402Server.settlePayment(paymentHeader, paymentRequirements!, body.facilitator)
 
       if (settlement?.success) {
         const chainId = getChainIdFromChainType(chainType)

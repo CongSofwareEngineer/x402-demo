@@ -11,7 +11,7 @@ import { CONFIG_PAYMENT_X402, TYPE_FACILITATOR } from '@/constants/x402'
 import { getChainIdFromChainType } from '@/utils/chain'
 import { COINBASE_CONFIG } from '@/configs/app'
 import { TOKEN_SUPPORT_X402 } from '@/constants/token'
-import { ConfigCustom } from '@/types/x402'
+import { BodyRequest, ConfigCustom } from '@/types/x402'
 export type FacilitatorType = 'base' | 'payAI' | 'daydreams'
 class X402Server {
   static getFacilitatorUrl(type: FacilitatorType) {
@@ -22,10 +22,11 @@ class X402Server {
     return TYPE_FACILITATOR[type]
   }
 
-  static getConfigX402(req: NextRequest, router: string, type: 'basic' | 'premium', chainType: string, configCustom?: ConfigCustom) {
+  static getConfigX402(req: NextRequest, router: string, type: 'basic' | 'premium', body: BodyRequest, configCustom?: ConfigCustom) {
     const url = new URL(req.url)
 
-    const chainId = getChainIdFromChainType(chainType)
+    console.log({ body })
+    const chainId = getChainIdFromChainType(body.chain || 'base')
 
     if (chainId) {
       const tokenSystem = TOKEN_SUPPORT_X402[chainId as keyof typeof TOKEN_SUPPORT_X402]
@@ -35,7 +36,7 @@ class X402Server {
       const routePatterns = computeRoutePatterns({
         [`${router}`]: {
           price: configSystem.amount,
-          network: chainType as any,
+          network: body.chain as any,
         },
       })
 
@@ -50,7 +51,7 @@ class X402Server {
       const paymentRequirements: PaymentRequirements[] = [
         {
           scheme: 'exact',
-          network: chainType as any,
+          network: body.chain as any,
           maxAmountRequired: maxAmountRequired,
           resource: url.href,
           description: configCustom?.description || 'Access to protected content',
