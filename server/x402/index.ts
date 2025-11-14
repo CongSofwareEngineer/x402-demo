@@ -11,6 +11,7 @@ import { CONFIG_PAYMENT_X402, TYPE_FACILITATOR } from '@/constants/x402'
 import { getChainIdFromChainType } from '@/utils/chain'
 import { COINBASE_CONFIG } from '@/configs/app'
 import { TOKEN_SUPPORT_X402 } from '@/constants/token'
+import { ConfigCustom } from '@/types/x402'
 export type FacilitatorType = 'base' | 'payAI' | 'daydreams'
 class X402Server {
   static getFacilitatorUrl(type: FacilitatorType) {
@@ -21,9 +22,8 @@ class X402Server {
     return TYPE_FACILITATOR[type]
   }
 
-  static getConfigX402(req: NextRequest, router: string, type: 'basic' | 'premium', method: 'GET' | 'POST' = 'POST', des?: string) {
+  static getConfigX402(req: NextRequest, router: string, type: 'basic' | 'premium', chainType: string, configCustom?: ConfigCustom) {
     const url = new URL(req.url)
-    const chainType = url.pathname.split('/')[4]
 
     const chainId = getChainIdFromChainType(chainType)
 
@@ -39,7 +39,7 @@ class X402Server {
         },
       })
 
-      const matchingRoute = findMatchingRoute(routePatterns, router, method)
+      const matchingRoute = findMatchingRoute(routePatterns, router, 'POST')
 
       const { price, network, config = {} } = matchingRoute!?.config || {}
       const atomicAmountForAsset = processPriceToAtomicAmount(price, network)
@@ -53,7 +53,7 @@ class X402Server {
           network: chainType as any,
           maxAmountRequired: maxAmountRequired,
           resource: url.href,
-          description: des || 'Access to protected content',
+          description: configCustom?.description || 'Access to protected content',
           mimeType: 'application/json',
           payTo: COINBASE_CONFIG.PAY_TO,
           maxTimeoutSeconds: COINBASE_CONFIG.MAX_TIMEOUT,
@@ -61,19 +61,16 @@ class X402Server {
           outputSchema: {
             input: {
               type: 'http',
-              method: method,
+              method: 'POST',
               discoverable: true,
               bodyType: 'json',
-              bodyFields: {
-                address: {
-                  type: 'string',
-                  required: false,
-                  description: 'Your address to search data', // for nested objects
-                },
-              },
               ...inputSchema,
+              ...configCustom?.input,
             },
-            output: outputSchema,
+            output: {
+              ...outputSchema,
+              ...configCustom?.output,
+            },
           },
           extra: (asset as ERC20TokenAmount['asset']).eip712,
         },

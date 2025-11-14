@@ -17,7 +17,7 @@ import { getChainTypeFromChainId } from '@/utils/chain'
 import SelectFacilitator from '@/components/SelectFacilitator'
 import { FacilitatorType } from '@/server/x402'
 
-function NFTBalanceByUSDT() {
+function NFTBalancePremium() {
   const [isPending, startTransition] = useTransition()
   const { address, isConnected } = useAccount()
   const { signTypedDataAsync } = useSignTypedData()
@@ -45,11 +45,13 @@ function NFTBalanceByUSDT() {
 
         const resRequire = await fetcher({
           // url: '/api/x402/nft-balance-premium',
-          url: `/api/x402/${typeFacilitator}/${chainType}/nft-premium`,
+          url: `/api/x402/nft-premium`,
           method: 'POST',
-          // body: {
-          //   address,
-          // },
+          body: {
+            address,
+            chain: chainType,
+            facilitator: typeFacilitator,
+          },
         })
 
         const paymentRequirements = resRequire?.data?.accepts[0]
@@ -93,13 +95,15 @@ function NFTBalanceByUSDT() {
         const payment: string = exact.evm.encodePayment(paymentPayload)
 
         const res = await fetcher({
-          url: `/api/x402/${typeFacilitator}/${chainType}/nft-premium`,
+          url: `/api/x402/nft-premium`,
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,
           },
           body: {
             address,
+            chain: chainType,
+            facilitator: typeFacilitator,
           },
         })
 
@@ -208,4 +212,4 @@ function NFTBalanceByUSDT() {
   )
 }
 
-export default NFTBalanceByUSDT
+export default NFTBalancePremium

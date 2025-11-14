@@ -9,35 +9,57 @@ const x402Version = 1
 
 export async function POST(req: NextRequest) {
   try {
-    const url = new URL(req.url!)
-    const typeFacilitator = url.pathname.split('/')[3] as FacilitatorType
-    const chainType = url.pathname.split('/')[4]
     const paymentHeader = req.headers.get('X-PAYMENT')
 
-    let body = {} as { address: string }
+    let body = {} as { address: string; chain?: string; facilitator?: FacilitatorType }
 
     try {
-      body = ((await req.json()) || {}) as { address: string }
+      body = ((await req.json()) || {}) as { address: string; chain?: string; facilitator?: FacilitatorType }
     } catch {
       body = {
         address: COINBASE_CONFIG.PAY_TO,
       }
     }
+    if (!body.facilitator) {
+      body.facilitator = 'base'
+    }
+    if (!body.chain) {
+      body.chain = 'base'
+    }
 
-    const config = X402Server.getConfigX402(
-      req,
-      `/api/x402/${typeFacilitator}/${chainType}/nft`,
-      'basic',
-      'POST',
-      'Get your NFT balance on Base chain'
-    )
+    const config = X402Server.getConfigX402(req, `/api/x402/nft`, 'basic', body.chain, {
+      description: `Get your NFT balance on ${body.chain} chain`,
+      input: {
+        bodyFields: {
+          address: {
+            type: 'string',
+            required: false,
+            description: 'Your address to search data. \nDefault is the payment address.', // for nested objects
+          },
+          chain: {
+            type: 'string',
+            required: false,
+            description:
+              'List chain support: [base, sei, avalanche, polygon] \n Default is chain base. The chain type to search NFT, e.g., base, abstract, avalanche.\n Facilitator base support chain: base \n Facilitator payAI support chain: base, sei, avalanche, polygon \n Facilitator daydreams support chain: base, polygon ', // for nested objects
+          },
+          facilitator: {
+            type: 'string',
+            required: false,
+            description: `The facilitator type.\n List support [base, payAI, daydreams]`,
+          },
+        },
+      },
+    })
+
+    console.log({ config })
+
     const { errorMessages, paymentRequirements } = config || {}
 
     if (paymentHeader && paymentRequirements) {
-      const settlement = await X402Server.settlePayment(paymentHeader, paymentRequirements!, typeFacilitator || 'base')
+      const settlement = await X402Server.settlePayment(paymentHeader, paymentRequirements!, body.facilitator)
 
       if (settlement?.success) {
-        const chainId = getChainIdFromChainType(chainType)
+        const chainId = getChainIdFromChainType(body.chain)
         const listNFT = await MoralisService.getListNFTsByOwner({
           address: body.address as any,
           chainId: chainId!,

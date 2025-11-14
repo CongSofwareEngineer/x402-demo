@@ -42,8 +42,13 @@ function NFTBalance() {
         const chainType = getChainTypeFromChainId(chainId?.toString() || '')
 
         const resRequire = await fetcher({
-          url: `/api/x402/${typeFacilitator}/${chainType}/nft`,
+          url: `/api/x402/nft`,
           method: 'POST',
+          body: {
+            address,
+            chain: chainType,
+            facilitator: typeFacilitator,
+          },
         })
 
         const paymentRequirements = resRequire?.data?.accepts[0]
@@ -83,13 +88,15 @@ function NFTBalance() {
         const payment: string = exact.evm.encodePayment(paymentPayload)
 
         const res = await fetcher({
-          url: `/api/x402/${typeFacilitator}/${chainType}/nft`,
+          url: `/api/x402/nft`,
           method: 'POST',
           headers: {
             'X-PAYMENT': payment,
           },
           body: {
             address,
+            chain: chainType,
+            facilitator: typeFacilitator,
           },
         })
 
