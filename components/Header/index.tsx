@@ -25,7 +25,7 @@ export default function Header() {
               <span className='text-blue-600 font-bold text-xl'>X</span>
             </div>
             <div>
-              <h1 className='text-white text-xl font-bold'>X402 Premium</h1>
+              <h1 className='text-white text-xl font-bold'>TC AI X402</h1>
               <p className='text-blue-200 text-sm'>Micropayment Protocol</p>
             </div>
           </div>

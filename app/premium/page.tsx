@@ -29,7 +29,7 @@ export default function DemoPage() {
       return BigNumber(valueEther).toFormat()
     }
 
-    return <></>
+    return '0'
   }
 
   return (
@@ -39,7 +39,7 @@ export default function DemoPage() {
         <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6'>
           <div className='flex items-start justify-between'>
             <div>
-              <h1 className='text-3xl font-bold text-gray-900 mb-2'>X402 Premium</h1>
+              <h1 className='text-3xl font-bold text-gray-900 mb-2'>TC AI X402</h1>
               <div className='flex items-center space-x-2 text-gray-600 mb-4'>
                 <div className='w-4 h-4 rounded-full border-2 border-gray-400' />
                 <span className='text-sm'>{typeof window !== 'undefined' && window.location.origin}</span>
